@@ -1,0 +1,70 @@
+//请求报文结构体
+
+struct RequestMsg
+   {
+       //1 密钥协商    //2 密钥校验;   // 3 密钥注销
+      int     cmdType;        // 报文类型 
+      char    clientId[12];   // 客户端编号
+      char    authCode[65];   // 认证码
+      char    serverId[12];   // 服务器端编号 
+      char    r1[64];         // 客户端随机数
+   };
+
+ client (send: request)-> server (recv: client request | send: respond)-> client(recv: respond)
+ 
+ 
+ //响应报文结构体
+   struct  RespondMsg
+   {
+       int     rv;             // 返回值
+       char    clientId[12];   // 客户端编号
+       char    serverId[12];   // 服务器编号
+       char    r2[64];         // 服务器端随机数
+       int     seckeyid;       // 对称密钥编号keysn
+    };
+
+	
+//密钥协商客户端配置信息
+class ClientInfo
+{
+public:
+	char clientID[12];			// 客户端ID
+	char serverID[12];			// 服务器ID
+	char authCode[65];			// 消息认证码
+	char serverIP[32];			// 服务器IP
+	unsigned int serverPort;	// 服务器端口
+	int maxNode;				// 共享内存节点个数  客户端默认1
+	int shmKey;					// 共享内存的Key
+};
+	
+
+//服务端配置信息
+class ServerInfo
+{
+public:
+	char serverID[12];	// 服务器端编号
+	char dbUser[24]; 	// 数据库用户名
+	char dbPasswd[24]; 	// 数据库密码
+	char dbSID[24]; 	// 数据库sid
+
+	unsigned short 	sPort;	// 服务器绑定的端口
+	int	maxNode; //共享内存最大网点树客户端默认1个
+	int shmkey;	 //共享内存keyid创建共享内存时使用	 
+};
+
+class NodeShmInfo
+ {
+ public:
+     int status;     //密钥状态
+     int seckeyId;   //密钥编号
+     char clientId[12];  //服务端ID
+     char serverId[12];  //客户端ID
+     char secKey[128];   //密钥信息
+ };
+
+	
+	
+	
+	
+	
+	
